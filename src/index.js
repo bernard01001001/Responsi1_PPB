@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Library Loan API' });
+  res.status(200).json({ success: true, message: 'Welcome to Library Loan API' });
 });
 
 app.use('/api/loans', loanRoutes);
