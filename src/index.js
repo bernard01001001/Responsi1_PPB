@@ -7,13 +7,10 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.use('/api/loans', loanRoutes);
-
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Library Loan API' });
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+app.use('/api/loans', loanRoutes);
+
+export default app;
