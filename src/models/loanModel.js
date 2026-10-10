@@ -46,15 +46,18 @@ export const LoanModel = {
     const loan = await this.getById(id);
     if (!loan) throw new Error('Data peminjaman tidak ditemukan');
 
-    const currentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    const todayStr = new Date().toISOString().split('T')[0];
     
-    const newStatus = currentDate > loan.due_date ? 'Terlambat' : 'Dikembalikan';
+    const currentDateObj = new Date(todayStr);
+    const dueDateObj = new Date(loan.due_date);
+
+    const newStatus = currentDateObj > dueDateObj ? 'Terlambat' : 'Dikembalikan';
 
     const { data, error } = await supabase
       .from('loans')
       .update({ 
         status: newStatus,
-        return_date: currentDate 
+        return_date: todayStr 
       })
       .eq('id', id)
       .select()
