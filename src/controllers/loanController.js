@@ -5,7 +5,7 @@ export const LoanController = {
     try {
       const { status } = req.query;
       const loans = await LoanModel.getAll(status);
-      res.status(200).json({ success: true, data: loans }); // Diubah dari 'loan' menjadi 'loans'
+      res.status(200).json({ success: true, data: loans });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -43,6 +43,15 @@ export const LoanController = {
     try {
       const updatedLoan = await LoanModel.update(req.params.id, req.body);
       res.status(200).json({ success: true, message: 'Data peminjaman berhasil diperbarui', data: updatedLoan });
+    } catch (err) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  },
+
+  async returnBook(req, res) {
+    try {
+      const updatedLoan = await LoanModel.returnBook(req.params.id);
+      res.status(200).json({ success: true, message: 'Buku berhasil dikembalikan', data: updatedLoan });
     } catch (err) {
       res.status(400).json({ success: false, error: err.message });
     }
