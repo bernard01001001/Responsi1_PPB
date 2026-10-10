@@ -42,6 +42,28 @@ export const LoanModel = {
     return data;
   },
 
+  async returnBook(id) {
+    const loan = await this.getById(id);
+    if (!loan) throw new Error('Data peminjaman tidak ditemukan');
+
+    const currentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    
+    const newStatus = currentDate > loan.due_date ? 'Terlambat' : 'Dikembalikan';
+
+    const { data, error } = await supabase
+      .from('loans')
+      .update({ 
+        status: newStatus,
+        return_date: currentDate 
+      })
+      .eq('id', id)
+      .select()
+      .single();
+      
+    if (error) throw error;
+    return data;
+  },
+
   async remove(id) {
     const { error } = await supabase
       .from('loans')
