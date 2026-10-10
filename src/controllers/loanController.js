@@ -5,6 +5,7 @@ export const LoanController = {
     try {
       const { status } = req.query;
       const loans = await LoanModel.getAll(status);
+      res.status(200);
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
